@@ -12,10 +12,42 @@ package main;
  * {@code Runnable}. Then calling {@code thread.start();}
  * </ol>
  * 
- * <li>The <strong>{@code Thread.setPriority(int)}</strong> will set the static priority of the
- * thread; The
- * <li><strong>{@code Thread.setUncaughtExceptionHandler(UncaughtExceptionHandler)}</strong> can be
- * used to handle any uncaught exceptions in the thread and handle the cleanups
+ * <li><strong>Thread.setPriority(int)</strong> will set the static priority of
+ * the thread.
+ * <li><strong>Thread.setUncaughtExceptionHandler()</strong> can be used to
+ * handle any uncaught exceptions in the thread and handle the cleanups.
+ * <li><strong>{@linkplain Runnable}</strong> is Functional interface
+ * representing an operation that does not return a result, and its functional
+ * method is {@code run();}
+ * <li><strong>{@linkplain Thread} </strong> is a thread of execution in a
+ * program. The Java virtual machine allows an application to have multiple
+ * threads of execution running concurrently.<br>
+ * 
+ * A task that returns a result and may throw an exception. Implementors define
+ * a single method with no arguments called {@code run()}.
+ * <hr>
+ * <p>
+ * The {@code Callable} interface is similar to {@link java.lang.Runnable}, in
+ * that both are designed for classes whose instances are potentially executed
+ * by another thread. A {@code Runnable}, however, does not return a result and
+ * cannot throw a checked exception.
+ * </p>
+ * <hr>
+ * <p>
+ * <b>STATE OF A THREAD</b>
+ * <li>NEW: Thread state for a thread which has not yet started.
+ * <li>RUNNABLE: A thread in the runnable state is executing in the Java virtual
+ * machine but it may be waiting for other resources from the operating system
+ * such as processor.
+ * <li>BLOCKED: A thread in the blocked state is waiting for a monitor lock to
+ * enter a synchronized block/method or reenter a synchronized block/method
+ * after calling {@link Object#wait() Object.wait}.
+ * <li>WAITING: A thread in the waiting state is waiting for another thread to
+ * perform a particular action.
+ * <li>TIMED_WAITING: Thread state for a waiting thread with a specified waiting
+ * time.
+ * <li>TERMINATED: The thread has completed execution.
+ * </p>
  */
 public class Main {
 
