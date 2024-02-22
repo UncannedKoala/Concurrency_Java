@@ -1,0 +1,4 @@
+* A thread can be created in 2 ways: 
+1>. Creating <Thread> class object and passing a <Runnable> object to <Thread> constructor. This <Runnable> object must have overridden the run() of <Runnable> interface. Then calling thread.start().
+2>. Extending a Thread and overriding the run() of the Thread class, which is inherited && overridden by <Thread> from <Runnable>. Then calling thread.start();
+
