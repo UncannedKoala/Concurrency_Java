@@ -2,3 +2,13 @@
 1>. Creating <Thread> class object and passing a <Runnable> object to <Thread> constructor. This <Runnable> object must have overridden the run() of <Runnable> interface. Then calling thread.start().
 2>. Extending a Thread and overriding the run() of the Thread class, which is inherited && overridden by <Thread> from <Runnable>. Then calling thread.start();
 
+* <Runnable> is Functional interface representing an operation that does not return a result, and its functional method is run();
+
+
+* STATEs OF A THREAD:
+• NEW : Thread state for a thread which has not yet started. 
+• RUNNABLE: A thread in the runnable state is executing in the Java virtualmachine but it may be waiting for other resources from the operating systemsuch as processor. 
+• BLOCKED: A thread in the blocked state is waiting for a monitor lock toenter a synchronized block/method or reenter a synchronized block/method aftercalling Object.wait. 
+• WAITING: A thread in the waiting state is waiting for another thread toperform a particular action. 
+• TIMED_WAITING: Thread state for a waiting thread with a specified waiting time. 
+• TERMINATED: The thread has completed execution. 
