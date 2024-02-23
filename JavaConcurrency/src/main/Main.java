@@ -52,13 +52,13 @@ package main;
 public class Main {
 
 	public static void main(String[] args) {
-		Thread thread1 = new Thread(new Runnable() {
+		Thread thread1 = new Thread(){
 			@Override
 			public void run() {
 				System.out.println(Thread.currentThread().getName());
 				throw new RuntimeException("Intentionally throwing RuntimeException from created Thread");
 			}
-		}, "new thread");
+		};
 
 		thread1.setPriority(1);
 		thread1.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
