@@ -1,5 +1,9 @@
 package main;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
 /**
  * <li>A thread can be created in 2 ways:
  * <ol>
@@ -51,31 +55,115 @@ package main;
  */
 public class Main {
 
+	public static final int MAX_PASSWORD_VALUE = 9999;
+
 	public static void main(String[] args) {
-		Thread thread1 = new Thread(){
-			@Override
-			public void run() {
-				System.out.println(Thread.currentThread().getName());
-				throw new RuntimeException("Intentionally throwing RuntimeException from created Thread");
-			}
-		};
+		Random random = new Random();
+		
+		Vault vault = new Vault(random.nextInt(MAX_PASSWORD_VALUE));
 
-		thread1.setPriority(1);
-		thread1.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-			// SUPPOSED TO BE THREAD CLEAN-UP CODE
-			@Override
-			public void uncaughtException(Thread t, Throwable e) {
-				System.err.println("Uncaught exception in thread " + t.getName() + ", caused by: " + e.getMessage());
-			}
-		});
-		thread1.start();
+		List<Thread> threads = new LinkedList<>();
+		
+		threads.add(new DescHackerThread(vault));
+		threads.add(new AscHackerThread(vault));
+		threads.add(new PoliceThread());
+		
+		threads.forEach(t -> t.start());
+	}
 
-		try {
-			Thread.sleep(750);
-		} catch (InterruptedException e) {
-			System.out.println("interruption in thread : " + Thread.currentThread().getName());
+	/**
+	 * Representing a vault Object
+	 */
+	private static class Vault {
+//		password ranges from 0 to 9999
+		private final int password;
+
+		public Vault(int password) {
+			this.password = password;
 		}
 
-		System.out.println(Thread.currentThread().getName());
+		public boolean isCorrectPassword(int guess) {
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+			}
+			return this.password == guess;
+		}
+	}
+
+	/**
+	 * A simple abstract class representing a Hacker
+	 */
+	private static abstract class HackerThread extends Thread {
+
+		protected Vault vault;
+
+		public HackerThread(Vault vault) {
+			this.vault = vault;
+			this.setName(this.getClass().getSimpleName()); // getSimpleName() vs getName()
+			this.setPriority(MAX_PRIORITY);
+		}
+
+		@Override
+		public void start() {
+			System.out.println("Starting thread: " + this.getName());
+			super.start();
+		}
+	}
+
+	private static class PoliceThread extends Thread {
+
+		@Override
+		public void run() {
+			super.run();
+			for (int i = 10; i > 0; i--)
+				try {
+					Thread.sleep(1000);
+					System.out.println(i + " second for police to arrive");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			System.out.println("Game over, police Arrived!!");
+			System.exit(0);
+
+		}
+	}
+
+	private static class AscHackerThread extends HackerThread {
+
+		public AscHackerThread(Vault vault) {
+			super(vault);
+		}
+
+		@Override
+		public void run() {
+			super.run();
+			for (int guess = 0; guess < MAX_PASSWORD_VALUE; guess++) {
+				if (this.vault.isCorrectPassword(guess)) {
+					System.out.println("Thread: " + this.getName() + " guessed the correct password to be " + guess);
+					System.exit(0); // equal to calling "Runtime.getRuntime().exit(n)"
+				}
+				;
+			}
+		}
+	}
+
+	private static class DescHackerThread extends HackerThread {
+
+		public DescHackerThread(Vault vault) {
+			super(vault);
+		}
+
+		@Override
+		public void run() {
+			super.run();
+			for (int guess = MAX_PASSWORD_VALUE; guess >= 0; guess--) {
+				if (this.vault.isCorrectPassword(guess)) {
+					System.out.println("Thread: " + this.getName() + " guessed the correct password to be " + guess);
+					System.exit(0); // equal to calling "Runtime.getRuntime().exit(n)"
+				}
+			}
+		}
 	}
 }
